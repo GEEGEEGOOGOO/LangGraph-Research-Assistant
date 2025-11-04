@@ -233,4 +233,4 @@ Feel free to reach out for questions or collaboration opportunities!
 
 - **GitHub:** [@GEEGEEGOOGOO](https://github.com/GEEGEEGOOGOO)
 - **Email:** shashank181002@gmail.com
-- **LinkedIn:** [Your Profile](https://linkedin.com/in/shashank1810)
+- **LinkedIn:** [MyProfile](https://linkedin.com/in/shashank1810)
