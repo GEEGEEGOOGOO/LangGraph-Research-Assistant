@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    container_name: langgraph_web
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data            # persist FAISS index on host
+      - ./app:/app/app:ro           # mount code read-only for quick iteration (optional)
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

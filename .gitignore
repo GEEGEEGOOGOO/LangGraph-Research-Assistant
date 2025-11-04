@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Environment variables
+.env
+.env.*
+
+# Data & build
+data/
+faiss_index/
+dist/
+build/
+*.egg-info/
+
+# VSCode
+.vscode/
