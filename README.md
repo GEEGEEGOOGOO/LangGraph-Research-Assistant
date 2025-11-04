@@ -183,15 +183,23 @@ docker run -p 8000:8000 langgraph-assistant:latest
 
 ### 🔹 Swagger UI Screenshot
 
-![Swagger UI](assets/swagger_ui.png)
+![Swagger UI](assets/SwaggerU_ResponseI.png)
 
 ### 🔹 Terminal Output (FAISS Index)
 
-![FAISS Output](assets/vectorstore_build.png)
+![FAISS Output](assets/Demo_Query_Response.png)
+
+### 🔹 Server Running
+
+![Server status](assets/Demo_Server_Running.png)
+
+### 🔹 Docker File
+
+![Docker Working](assets/Docker_SS.png)
 
 ### 🔹 API Demo GIF
 
-![Demo](assets/demo.gif)
+![Demo](assets/chrome_ELVc46T9a7.gif)
 
 ---
 
@@ -215,7 +223,7 @@ docker run -p 8000:8000 langgraph-assistant:latest
 
 ## 📄 License
 
-MIT License © 2025 — Created by **[Your Name]**
+MIT License © 2025 — Created by **[Shashank Kumar]**
 
 ---
 
@@ -224,5 +232,5 @@ MIT License © 2025 — Created by **[Your Name]**
 Feel free to reach out for questions or collaboration opportunities!
 
 - **GitHub:** [@GEEGEEGOOGOO](https://github.com/GEEGEEGOOGOO)
-- **Email:** your.email@example.com
-- **LinkedIn:** [Your Profile](https://linkedin.com/in/yourprofile)
+- **Email:** shashank181002@gmail.com
+- **LinkedIn:** [Your Profile](https://linkedin.com/in/shashank1810)
