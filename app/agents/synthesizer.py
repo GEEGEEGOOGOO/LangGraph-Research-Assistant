@@ -1,5 +1,6 @@
 # app/agents/synthesizer.py
 import asyncio
+import os
 from typing import Any, Dict, List
 from app.config import settings
 from app.langsmith_instrument import trace_event
@@ -8,15 +9,30 @@ class Synthesizer:
     def __init__(self, temperature: float = 0.0):
         self.temperature = temperature
         self.use_openai = bool(settings.OPENAI_API_KEY)
+        self.use_gemini = bool(os.getenv("GEMINI_API_KEY"))
+        
         try:
-            if self.use_openai:
+            if self.use_gemini:
+                from langchain_google_genai import ChatGoogleGenerativeAI
+                self.llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GEMINI_API_KEY"), temperature=self.temperature)
+                self.async_predict = getattr(self.llm, "apredict", None)
+                # Gemini might not have apredict in older langchain versions, fallback to invoke if needed
+                if not self.async_predict:
+                    # Create a wrapper for invoke
+                    async def _predict(text):
+                        res = await self.llm.ainvoke(text)
+                        return res.content
+                    self.async_predict = _predict
+                    
+            elif self.use_openai:
                 from langchain.chat_models import ChatOpenAI
                 self.llm = ChatOpenAI(temperature=self.temperature, model_name="gpt-3.5-turbo")
                 self.async_predict = getattr(self.llm, "apredict", None)
             else:
                 self.llm = None
                 self.async_predict = None
-        except Exception:
+        except Exception as e:
+            print(f"[WARN] Failed to init LLM: {e}")
             self.llm = None
             self.async_predict = None
 

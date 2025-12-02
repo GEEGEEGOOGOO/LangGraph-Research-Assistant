@@ -1,236 +1,113 @@
-# 🤖 LangGraph Research Assistant
+# 🧠 LangGraph Research Assistant (GraphRAG Edition)
 
-A **multi-agent RAG (Retrieval-Augmented Generation)** system built using **LangGraph**, **LangChain**, and **LangSmith**, designed to simulate how intelligent AI agents retrieve, reason, and synthesize knowledge collaboratively.
+> **Your AI-Powered Second Brain that "Connects the Dots"**
 
-> This project demonstrates a full local RAG pipeline — **no external OpenAI API required** — with FAISS vector search, multi-agent orchestration, LangSmith tracing, and Docker deployment.
-
----
-
-## 🚀 Features
-
-- 🧠 **LangGraph Multi-Agent Orchestration**  
-  Modular design with planner, retriever, and synthesizer agents.
-  
-- 📚 **RAG (Retrieval-Augmented Generation)**  
-  Retrieves relevant documents using FAISS before synthesizing answers.
-
-- 🔍 **FAISS Vectorstore**  
-  Handles efficient document indexing and semantic similarity search.
-
-- 📈 **LangSmith Integration**  
-  Traces and monitors agent events and execution flow.
-
-- 🐳 **Dockerized Setup**  
-  Fully containerized — deploy anywhere.
-
-- 🧩 **Local LLM Fallback**  
-  When OpenAI API is unavailable, a deterministic synthesizer generates context-based answers locally.
+![Graph View](https://raw.githubusercontent.com/GEEGEEGOOGOO/LangGraph-Research-Assistant/main/assets/graph_view_demo.png)
 
 ---
 
-## 🏗️ Architecture Overview
+## 📖 What is this? (In Simple English)
 
-```
-User Query
-│
-▼
-[ Planner Agent ]
-│
-▼
-[ Retriever Agent ] → Fetches top-k context documents (via FAISS)
-│
-▼
-[ Synthesizer Agent ] → Generates context-based final answer
-│
-▼
-Response returned to FastAPI endpoint (/run)
-```
+Imagine you have a super-smart research assistant who reads every document you give them. But instead of just memorizing the words, they **draw a giant mind map** connecting every person, concept, and idea.
+
+When you ask a question, they don't just look for matching keywords (like a standard search engine). Instead, they look at the **connections** on their mind map to give you a deeper, smarter answer.
+
+### 🍎 An Analogy
+*   **Standard Search (Google/Ctrl+F):** You search for "Apple". It gives you a list of pages with the word "Apple".
+*   **This Assistant (GraphRAG):** You search for "Apple". It tells you: *"Apple released the iPhone in 2007, which was founded by Steve Jobs, who also founded Pixar."* It understands the **relationships**.
+
+### 🌍 Why is this useful today?
+We are drowning in information. We have thousands of PDFs, notes, and docs. Finding *specific* facts is easy, but understanding **how things connect** is hard. This tool solves that by turning your scattered documents into a structured **Knowledge Graph**.
 
 ---
 
-## 🧪 Tech Stack
+## 🛠️ Technical Details (Under the Hood)
 
-| Layer | Tool / Library | Description |
-|-------|----------------|--------------|
-| Framework | **FastAPI** | Backend API layer |
-| Orchestration | **LangGraph** | Multi-agent workflow |
-| Retrieval | **FAISS + LangChain** | Vector similarity search |
-| Embeddings | **Local Sentence Embeddings / OpenAI (optional)** | Document encoding |
-| Monitoring | **LangSmith** | Event tracing and pipeline visualization |
-| Containerization | **Docker** | Build and deployment |
+This project is a sophisticated **Graph Retrieval-Augmented Generation (GraphRAG)** system.
+
+### Core Technologies
+1.  **GraphRAG Engine**: Instead of storing text in a simple list (Vector Store), we extract entities and relationships to build a **Knowledge Graph** using `NetworkX`.
+2.  **Google Gemini 2.5 Flash**: The brain of the operation. We use this latest, ultra-fast AI model to:
+    *   **Read** your documents and extract triplets (e.g., `Entity A -> Related To -> Entity B`).
+    *   **Synthesize** answers based on the graph data.
+3.  **LangGraph**: The "manager" that coordinates different AI agents (Planner, Retriever, Synthesizer) to work together.
+4.  **React Frontend**: A beautiful, futuristic dashboard to visualize your knowledge graph interactively using D3.js.
+
+### How it Works (The Pipeline)
+1.  **Ingestion**: You upload a document.
+2.  **Extraction**: Gemini reads it and identifies key concepts (Nodes) and how they relate (Edges).
+3.  **Graph Construction**: These are added to a persistent network graph.
+4.  **Querying**: When you ask a question, the system traverses the graph to find related concepts (even if they don't use the exact same keywords).
+5.  **Synthesis**: Gemini writes a clear answer using this rich context.
 
 ---
 
-## ⚙️ Installation & Setup
+## 🚀 Use Cases
 
-### 1️⃣ Clone the repository
+### 1. Academic Research
+*   **Scenario**: You have 50 papers on "Climate Change".
+*   **Benefit**: Ask *"How does ocean acidification affect coral reefs?"* and get an answer synthesizing findings from *all* papers, showing the chain of cause-and-effect.
 
+### 2. Legal & Compliance
+*   **Scenario**: Analyzing hundreds of contracts.
+*   **Benefit**: Instantly see how "Clause X" in Contract A relates to "Regulation Y" in a government PDF.
+
+### 3. Personal Knowledge Management (PKM)
+*   **Scenario**: You have years of messy notes.
+*   **Benefit**: Turn your Obsidian/Notion dump into a queryable brain. Discover that a book you read 3 years ago connects to a project you're working on today.
+
+### 4. Investigative Journalism
+*   **Scenario**: Connecting dots between people, companies, and events.
+*   **Benefit**: The graph automatically highlights that "Person A" worked at "Company B" which funded "Event C".
+
+---
+
+## 🏆 The Competitive Edge
+
+Why use this over ChatGPT or standard RAG tools?
+
+| Feature | Standard RAG / ChatGPT | **LangGraph Research Assistant** |
+| :--- | :--- | :--- |
+| **Understanding** | Matches keywords (Vector Search) | **Understands Relationships (Graph Search)** |
+| **Context** | Limited to text chunks | **Traverses connected concepts (Multi-hop)** |
+| **Transparency** | "Black box" answer | **Visual Graph** (See the connections) |
+| **Discovery** | Finds what you search for | **Finds what you didn't know you needed** |
+| **Cost** | High (if using GPT-4) | **Low** (Optimized with Gemini 2.5 Flash) |
+
+---
+
+## ⚡ Quick Start
+
+### Prerequisites
+*   Python 3.11+
+*   Node.js & npm
+*   Google Gemini API Key
+
+### 1. Backend Setup
 ```bash
-git clone https://github.com/GEEGEEGOOGOO/LangGraph-Research-Assistant.git
-cd LangGraph-Research-Assistant
-```
-
-### 2️⃣ Create and activate virtual environment
-
-```bash
-python -m venv .venv
-.\.venv\Scripts\activate   # Windows
-source .venv/bin/activate  # macOS/Linux
-```
-
-### 3️⃣ Install dependencies
-
-```bash
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Set your API Key in .env
+# GEMINI_API_KEY=your_key_here
 ```
 
-### 4️⃣ Build Vectorstore (FAISS)
-
+### 2. Frontend Setup
 ```bash
-python -m app.vectorstore
+cd frontend
+npm install
 ```
 
-Expected output:
-
-```
-[SUCCESS] FAISS index saved at ./data/faiss_index
-```
-
-### 5️⃣ Run the FastAPI Server
-
+### 3. Run Everything
+Double-click `start_all.bat` (Windows) or run:
 ```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-```
+# Terminal 1 (Backend)
+uvicorn app.main:app --reload
 
-When you see:
-
-```
-INFO: Application startup complete.
-```
-
-your server is running at 👉 [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
----
-
-## 🧠 Example Queries (Swagger UI)
-
-**Endpoint:** `POST /run`
-
-Example request:
-
-```json
-{
-  "query": "Explain how RAG works"
-}
-```
-
-Example response:
-
-```json
-{
-  "planner_action": "retrieve",
-  "retrieved_docs": [
-    "Retrieval-Augmented Generation (RAG) adds context to LLMs using vector search.",
-    "Model Context Protocol (MCP) defines how models share tools and resources.",
-    "LangGraph supports multi-agent reasoning and orchestration."
-  ],
-  "final_answer": "LOCAL SYNTHESIS for query: 'Explain how RAG works' ..."
-}
+# Terminal 2 (Frontend)
+npm run dev
 ```
 
 ---
 
-## 🧩 Project Structure
-
-```
-LangGraph_Research_Assistant_v2/
-├── app/
-│   ├── agents/
-│   │   ├── planner.py
-│   │   ├── retriever.py
-│   │   ├── synthesizer.py
-│   ├── graph.py
-│   ├── main.py
-│   ├── config.py
-│   ├── vectorstore.py
-│   └── embeddings.py
-├── data/
-│   └── faiss_index/
-├── tests/
-│   ├── test_pipeline.py
-│   ├── test_retriever.py
-│   ├── test_synthesizer.py
-│   └── test_planner.py
-├── Dockerfile
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🐳 Docker Deployment
-
-Build and run your containerized assistant:
-
-```bash
-docker build -t langgraph-assistant:latest .
-docker run -p 8000:8000 langgraph-assistant:latest
-```
-
----
-
-## 🧩 Demo
-
-### 🔹 Swagger UI Screenshot
-
-![Swagger UI](assets/SwaggerU_ResponseI.png)
-
-### 🔹 Terminal Output (FAISS Index)
-
-![FAISS Output](assets/Demo_Query_Response.png)
-
-### 🔹 Server Running
-
-![Server status](assets/Demo_Server_Running.png)
-
-### 🔹 Docker File
-
-![Docker Working](assets/Docker_SS.png)
-
-### 🔹 API Demo GIF
-
-![Demo](assets/chrome_ELVc46T9a7.gif)
-
----
-
-## 🧠 Key Learning Outcomes
-
-* Implemented **LangGraph** for multi-agent reasoning.
-* Designed a **Retrieval-Augmented Generation** pipeline.
-* Integrated **LangSmith** for workflow tracing.
-* Built deterministic **local fallback synthesis** (no API required).
-* Deployed the entire workflow using **Docker**.
-
----
-
-## 🎯 Ideal For
-
-* **AIML Internship applications**
-* **LangGraph & RAG architecture understanding**
-* **Demonstrating full AI pipeline engineering**
-
----
-
-## 📄 License
-
-MIT License © 2025 — Created by **[Shashank Kumar]**
-
----
-
-## 📬 Contact
-
-Feel free to reach out for questions or collaboration opportunities!
-
-- **GitHub:** [@GEEGEEGOOGOO](https://github.com/GEEGEEGOOGOO)
-- **Email:** shashank181002@gmail.com
-- **LinkedIn:** [MyProfile](https://linkedin.com/in/shashank1810)
+**Built with ❤️ using LangGraph, Gemini, and React.**

@@ -10,8 +10,13 @@ class Retriever:
         self.vsm = vsm or VectorStoreManager()
 
     async def run(self, query: str, k: int = 3) -> Dict[str, Any]:
+        """
+        Runs the retrieval process using the Knowledge Graph.
+        """
+        # The VSM now uses SimpleKnowledgeGraph
+        # similarity_search returns Documents where page_content is the entity/neighbor
         docs = self.vsm.similarity_search(query, k=k)
-        # docs are langchain Documents; turn into simple dicts
+        
         texts = []
         for d in docs:
             if hasattr(d, "page_content"):
@@ -21,4 +26,9 @@ class Retriever:
                     texts.append(str(d))
                 except Exception:
                     texts.append("")
+        
+        # If no results found, we might want to fallback or just return empty
+        if not texts:
+            print(f"[INFO] No graph neighbors found for query: {query}")
+            
         return {"docs": texts}
