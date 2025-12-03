@@ -110,4 +110,4 @@ npm run dev
 
 ---
 
-**Built with ❤️ using LangGraph, Gemini, and React.**
+**Built  using LangGraph, Gemini, and React.**
