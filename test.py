@@ -2,7 +2,7 @@ import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 # PLACEHOLDER: Replace with your actual API key
-GEMINI_API_KEY = "AIzaSyD2YZ2GgvuIhF1IXIQ5gn8F9TJVV-MPnhA"
+GEMINI_API_KEY = ""
 
 def test_key():
     if GEMINI_API_KEY == "YOUR_GEMINI_API_KEY_HERE":
